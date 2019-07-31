@@ -1,0 +1,105 @@
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Test exericse</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+      <form class="form-inline my-2 my-lg-0">
+        <button type="button" class="btn btn-outline-secondary mr-2" (click)="btnClicked('Europe')">Europe</button>
+        <button type="button" class="btn btn-outline-secondary mr-2" (click)="btnClicked('Asia')">Asia</button>
+
+        <input class="form-control mr-sm-2" type="search" #code placeholder="Search countries.." aria-label="Search"
+               (keydown.enter)="searchByCountryCode(code.value)" >
+      </form>
+    </div>
+  </nav>
+
+</header>
+
+<div class="row">
+  <div class="col-sm-8">
+    <div class='card-body'
+         *ngIf="countryVal && countryVal.length">
+      <div class="table-responsive">
+        <table class="table mb-0"
+               *ngIf="countryVal && countryVal.length">
+          <thead>
+          <th>Name</th>
+          <th>Capital</th>
+          <th>Currencies</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let country of countryVal| paginate: { itemsPerPage: 5, currentPage: p }">
+              <td style="align-content:flex-start">
+                <!--<a herf="#" role="button" (click)="funcDetails(country.name)">
+            {{country.name}}
+          </a>-->
+                
+                <button type="button" class="btn btn-link" (click)="funcDetails(country.name)" style="width:80PX">
+                  {{country.name}}
+
+                </button>
+
+              </td>
+              <td>{{country.capital}}</td>
+              <td>{{country.currencies[0].symbol}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </div>
+    </div>
+    </div>
+
+    <div class="col-sm-4">
+
+      <div class="table-responsive">
+  <table class="table mb-0"
+         *ngIf="searchVal && searchVal.length">
+   
+    <tbody *ngFor="let country of searchVal">
+      <tr >
+        <td style="align-content:flex-start" colspan="2">
+
+          <h3>
+            {{country.name}}
+
+
+          </h3>
+
+
+
+        </td>
+
+       
+      </tr>
+      <tr>
+        <td>Area:</td>
+        <td>{{country.area}}</td>
+      </tr>
+      <tr>
+        <td>Language:</td>
+        <td>{{country.languages[0].name}}</td>
+      </tr>
+      <tr>
+        <td>Papulation</td>
+        <td>{{country.population}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+    </div>
+    
+  </div>
+  <div class="alert alert-danger"
+       *ngIf="errorMessage$ | async as errorMessage">
+    {{errorMessage}}
+  </div>
+  <footer>
+    <div *ngIf="countryVal && countryVal.length">
+      <button type="button" class="btn btn-outline-secondary" (click)="btnClear()">Clear</button>
+    </div>
+  </footer>
